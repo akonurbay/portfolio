@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=900" />
+<title>Arsen Konurbay — Talent Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f1efe9;
+    --paper-2:#e8e5dd;
+    --ink:#0e0e0c;
+    --ink-2:#1a1a17;
+    --mute:#83807a;
+    --rule:#0e0e0c;
+    --accent:#c2402b; /* used very sparingly, like editorial red stamp */
+    --page-w: 850px;
+    --page-h: 1202px; /* A4 ratio at 850 wide */
+    --pad: 44px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#cdc9bf;font-family:'Inter Tight',Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  body{padding:40px 0 80px;}
+  .book{display:flex;flex-direction:column;align-items:center;gap:28px;}
+
+  .page{
+    width:var(--page-w);
+    height:var(--page-h);
+    background:var(--paper);
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 2px 0 rgba(0,0,0,.04), 0 30px 60px -20px rgba(0,0,0,.25);
+  }
+  .page[data-screen-label]{}
+
+  /* Shared chrome */
+  .crown,.foot{
+    position:absolute; left:var(--pad); right:var(--pad);
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'JetBrains Mono',ui-monospace,monospace;
+    font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink); font-weight:500;
+  }
+  .crown{top:22px;}
+  .foot{bottom:22px;}
+  .crown .dot,.foot .dot{display:inline-block;width:5px;height:5px;background:var(--ink);border-radius:50%;margin:0 8px;vertical-align:middle;}
+  .rule{height:1px;background:var(--ink);width:100%;}
+  .hairline{height:.5px;background:var(--ink);width:100%;}
+
+  /* Typography */
+  .display{
+    font-family:'Inter Tight',Helvetica,sans-serif;
+    font-weight:700;
+    letter-spacing:-0.04em;
+    line-height:.86;
+    color:var(--ink);
+  }
+  .editorial{
+    font-family:'Instrument Serif',Georgia,serif;
+    font-style:italic;
+    letter-spacing:0;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;}
+  .label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);}
+  .mute{color:var(--mute);}
+
+  img{display:block;max-width:100%;}
+  .img{background:#222;overflow:hidden;position:relative;}
+  .img img{width:100%;height:100%;object-fit:cover;display:block;}
+  .img .cap{
+    position:absolute;left:10px;bottom:8px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+    color:#fff; mix-blend-mode:difference;
+  }
+
+  /* ============== PAGE 01 — COVER ============== */
+  .p-cover{background:#1a1a17;color:#f1efe9;}
+  .p-cover .crown,.p-cover .foot{color:#f1efe9;}
+  .p-cover .crown .dot,.p-cover .foot .dot{background:#f1efe9;}
+  .cover-img{
+    position:absolute; inset:0; z-index:0;
+  }
+  .cover-img img{width:100%;height:100%;object-fit:cover;object-position:50% 35%; filter:saturate(.9) contrast(1.02);}
+  .cover-vignette{position:absolute;inset:0;background:
+    linear-gradient(180deg, rgba(10,10,8,.55) 0%, rgba(10,10,8,0) 22%, rgba(10,10,8,0) 55%, rgba(10,10,8,.7) 100%);
+    z-index:1;}
+  .cover-grain{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:3px 3px;mix-blend-mode:overlay;z-index:2;pointer-events:none;}
+  .cover-name{
+    position:absolute; left:var(--pad); right:var(--pad); bottom:78px; z-index:3;
+    color:#f4f1e8;
+  }
+  .cover-name .first{font-size:128px;}
+  .cover-name .last{font-size:128px; margin-top:-6px;}
+  .cover-name .last span.amp{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;letter-spacing:-.02em;}
+  .cover-meta{
+    position:absolute; left:var(--pad); right:var(--pad); bottom:34px; z-index:3;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    color:#f1efe9;
+  }
+  .cover-meta .left{display:flex;gap:24px;align-items:flex-end;}
+  .cover-meta .col{display:flex;flex-direction:column;gap:2px;}
+  .cover-meta .k{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;}
+  .cover-meta .v{font-family:'Inter Tight',sans-serif;font-size:14px;font-weight:500;letter-spacing:.02em;}
+  .cover-stamp{
+    position:absolute; right:var(--pad); top:64px; z-index:3;
+    border:1px solid #f1efe9; padding:10px 14px 9px;
+    font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:#f1efe9;
+    display:flex; flex-direction:column; gap:2px; align-items:flex-end;
+  }
+  .cover-stamp .y{font-size:22px;letter-spacing:.06em;font-weight:500;}
+
+  .vline{position:absolute;top:54px;bottom:54px;width:1px;background:rgba(241,239,233,.18);z-index:3;}
+  .vline.l{left:var(--pad);}
+  .vline.r{right:var(--pad);}
+
+  /* ============== PAGE 02 — TALENT CARD / INDEX ============== */
+  .p-card{padding:64px var(--pad) 56px;}
+  .card-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap:36px;
+    margin-top:46px; height: calc(100% - 46px - 60px);
+  }
+  .card-portrait{height:100%;background:#222;overflow:hidden;}
+  .card-portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(.05) contrast(1.02);}
+  .card-right{display:flex;flex-direction:column;gap:18px;height:100%;}
+  .ident{
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .ident .num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;}
+  .ident .nm{font-family:'Inter Tight',sans-serif;font-size:54px;font-weight:700;line-height:.92;letter-spacing:-.035em;}
+  .ident .sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;line-height:1.1;color:var(--ink);margin-top:6px;}
+
+  .stats{
+    border-top:1px solid var(--ink); border-bottom:1px solid var(--ink);
+    padding:14px 0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px 24px;
+  }
+  .stat{display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+  .stat .k{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+  .stat .v{font-family:'Inter Tight',sans-serif;font-size:14px;font-weight:500;letter-spacing:0;}
+
+  .toc{display:flex;flex-direction:column;gap:0;margin-top:2px;}
+  .toc .row{display:grid;grid-template-columns:28px 1fr 28px;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(14,14,12,.18);font-family:'Inter Tight',sans-serif;font-size:13px;font-weight:500;letter-spacing:-.005em;}
+  .toc .row:last-child{border-bottom:0;}
+  .toc .row .n{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:var(--mute);}
+  .toc .row .t{}
+  .toc .row .p{text-align:right;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--mute);}
+
+  .bio{font-family:'Instrument Serif',serif;font-style:italic;font-size:15.5px;line-height:1.35;color:var(--ink);text-wrap:pretty;margin-top:auto;}
+  .bio b{font-family:'Inter Tight',sans-serif;font-style:normal;font-weight:600;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:8px;}
+
+  /* ============== PAGE 03 — HEADSHOTS ============== */
+  .p-head{padding:64px var(--pad) 56px;}
+  .head-title{display:flex;justify-content:space-between;align-items:flex-end;}
+  .head-title h2{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:64px;letter-spacing:-.04em;line-height:.9;margin:0;}
+  .head-title .sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:var(--mute);}
+  .head-grid{
+    display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
+    gap:14px; margin-top:24px; height:calc(100% - 64px - 130px);
+  }
+  .head-grid .img{height:100%;}
+  .head-grid .img img{filter:contrast(1.03) saturate(.95);}
+  .h-meta{display:flex;justify-content:space-between;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);}
+  .h-meta .ix{color:var(--mute);}
+
+  /* ============== PAGE 04 — FULL LENGTH ============== */
+  .p-full{padding:64px var(--pad) 56px;}
+  .full-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:14px;}
+  .full-head h2{margin:0;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:48px;letter-spacing:-.035em;line-height:.95;}
+  .full-head .right{text-align:right;display:flex;flex-direction:column;gap:2px;}
+  .full-head .right .k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);}
+  .full-head .right .v{font-family:'Inter Tight',sans-serif;font-size:14px;font-weight:500;}
+  .full-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;height:calc(100% - 64px - 90px - 56px);}
+  .full-grid .img{height:100%;}
+  .full-grid .img img{object-position:50% 30%;}
+  .full-foot{margin-top:14px;display:flex;justify-content:space-between;align-items:center;}
+  .full-foot .left{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:var(--ink);}
+  .full-foot .right{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+
+  /* ============== PAGE 05 — EXPRESSIONS / CHARACTER ============== */
+  .p-expr{padding:0;display:grid;grid-template-columns:1.4fr 1fr;}
+  .expr-left{position:relative;}
+  .expr-left img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:contrast(1.04) saturate(.92);}
+  .expr-left .ov{
+    position:absolute;left:24px;bottom:24px;
+    background:rgba(14,14,12,.78);color:#f1efe9;
+    padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  }
+  .expr-right{padding:64px 44px 56px;display:flex;flex-direction:column;}
+  .expr-right h2{margin:0;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:56px;letter-spacing:-.04em;line-height:.9;}
+  .expr-right .lede{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;line-height:1.3;margin-top:14px;color:var(--ink);}
+  .expr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;}
+  .expr-grid .img{aspect-ratio:3/4;}
+  .expr-tags{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--ink);padding:5px 9px;}
+
+  /* ============== PAGE 06 — LIFESTYLE / EDITORIAL ============== */
+  .p-life{padding:64px var(--pad) 56px;}
+  .life-head{display:flex;justify-content:space-between;align-items:flex-end;}
+  .life-head h2{margin:0;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:64px;letter-spacing:-.04em;line-height:.9;}
+  .life-head .ed{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:var(--mute);}
+  .life-grid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    grid-template-rows:repeat(8,1fr);
+    gap:10px;
+    margin-top:20px;
+    height:calc(100% - 64px - 100px - 56px);
+  }
+  .life-grid .img{overflow:hidden;}
+  .l1{grid-column:1 / span 3; grid-row:1 / span 5;}
+  .l2{grid-column:4 / span 3; grid-row:1 / span 3;}
+  .l3{grid-column:4 / span 3; grid-row:4 / span 5;}
+  .l4{grid-column:1 / span 3; grid-row:6 / span 3;}
+  .life-foot{margin-top:14px;display:flex;justify-content:space-between;align-items:center;}
+  .life-foot .left{font-family:'Instrument Serif',serif;font-style:italic;font-size:16px;color:var(--ink);}
+  .life-foot .right{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+
+  /* ============== PAGE 07 — PHYSIQUE / BODY CARD ============== */
+  .p-body{padding:64px var(--pad) 56px;}
+  .body-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--ink);padding-bottom:14px;}
+  .body-head h2{margin:0;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:48px;letter-spacing:-.035em;line-height:.95;}
+  .body-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;height:calc(100% - 64px - 84px - 200px);}
+  .body-grid .img img{filter:grayscale(.05) contrast(1.02);}
+  .body-grid .cap{position:absolute;left:10px;bottom:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);}
+  .body-stats{margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);}
+  .body-stats .cell{padding:14px 12px;border-right:1px solid rgba(14,14,12,.2);display:flex;flex-direction:column;gap:6px;}
+  .body-stats .cell:last-child{border-right:0;}
+  .body-stats .k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+  .body-stats .v{font-family:'Inter Tight',sans-serif;font-size:24px;font-weight:600;letter-spacing:-.02em;}
+  .body-note{margin-top:14px;font-family:'Instrument Serif',serif;font-style:italic;font-size:15px;color:var(--ink);max-width:560px;line-height:1.35;}
+
+  /* ============== PAGE 08 — EXPERIENCE / ROLES ============== */
+  .p-exp{padding:0;display:grid;grid-template-columns:1fr 1.1fr;}
+  .exp-left{padding:64px 28px 56px var(--pad);display:flex;flex-direction:column;}
+  .exp-left h2{margin:0;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:56px;letter-spacing:-.04em;line-height:.9;}
+  .exp-left .kicker{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:14px;}
+  .exp-list{margin-top:28px;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--ink);}
+  .exp-row{display:grid;grid-template-columns:54px 1fr 110px;gap:10px;padding:14px 0;border-bottom:1px solid rgba(14,14,12,.2);}
+  .exp-row .yr{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--ink);padding-top:3px;}
+  .exp-row .title{font-family:'Inter Tight',sans-serif;font-size:15.5px;font-weight:600;letter-spacing:-.01em;}
+  .exp-row .desc{font-family:'Instrument Serif',serif;font-style:italic;font-size:13.5px;color:var(--mute);margin-top:2px;line-height:1.3;}
+  .exp-row .role{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-align:right;padding-top:3px;}
+  .exp-stamp{margin-top:auto;display:flex;align-items:center;gap:14px;}
+  .exp-stamp .sq{width:54px;height:54px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-align:center;line-height:1.1;}
+  .exp-stamp .txt{font-family:'Instrument Serif',serif;font-style:italic;font-size:14px;line-height:1.3;color:var(--ink);max-width:280px;}
+  .exp-right{position:relative;overflow:hidden;background:#15140f;}
+  .exp-r-main{position:absolute;inset:0;}
+  .exp-r-main img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;filter:contrast(1.06) saturate(.88);}
+  .exp-r-tiles{position:absolute;left:18px;right:18px;bottom:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .exp-r-tiles .img{aspect-ratio:4/5;border:2px solid #f1efe9;}
+
+  /* ============== PAGE 09 — SKILLS + CONTACTS ============== */
+  .p-end{padding:64px var(--pad) 56px;display:flex;flex-direction:column;}
+  .end-top{display:grid;grid-template-columns:1.2fr 1fr;gap:36px;border-bottom:1px solid var(--ink);padding-bottom:20px;}
+  .end-top h2{margin:0;font-family:'Inter Tight',sans-serif;font-weight:700;font-size:60px;letter-spacing:-.04em;line-height:.88;}
+  .end-top .lede{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;line-height:1.32;color:var(--ink);}
+  .skills{display:grid;grid-template-columns:1fr 1fr;gap:14px 32px;margin-top:26px;}
+  .skill-col h4{margin:0 0 10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);font-weight:500;border-bottom:1px solid var(--ink);padding-bottom:6px;}
+  .skill-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;}
+  .skill-col li{font-family:'Inter Tight',sans-serif;font-size:13.5px;font-weight:500;letter-spacing:-.005em;display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:.5px dashed rgba(14,14,12,.25);padding-bottom:5px;}
+  .skill-col li .lv{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--mute);}
+
+  .end-bottom{margin-top:auto;display:grid;grid-template-columns:1fr 200px;gap:24px;align-items:end;border-top:1px solid var(--ink);padding-top:22px;}
+  .contact-block{display:flex;flex-direction:column;gap:14px;}
+  .contact-block .lbl{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);}
+  .contact-block .big{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:34px;letter-spacing:-.025em;line-height:1;}
+  .contact-block .em{font-family:'Inter Tight',sans-serif;font-weight:500;font-size:18px;letter-spacing:-.01em;}
+  .contact-block .city{font-family:'Instrument Serif',serif;font-style:italic;font-size:16px;color:var(--ink);}
+  .qr-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .qr{width:160px;height:160px;background:#fff;padding:10px;}
+  .qr svg{width:100%;height:100%;display:block;}
+  .qr-cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);text-align:right;}
+
+  /* Final colophon line */
+  .colophon{
+    position:absolute;left:var(--pad);right:var(--pad);bottom:22px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);
+  }
+
+  /* Decorative bits */
+  .barcode{display:inline-flex;gap:1px;align-items:end;height:18px;}
+  .barcode span{display:block;width:1.5px;background:var(--ink);height:60%;}
+  .barcode span:nth-child(2n){height:90%;}
+  .barcode span:nth-child(3n){height:40%;width:2.5px;}
+  .barcode span:nth-child(5n){height:100%;}
+
+  /* Print */
+  @media print {
+    @page{ size: A4; margin: 0; }
+    html,body{background:#fff;padding:0;}
+    .book{gap:0;}
+    .page{
+      width:210mm; height:297mm; box-shadow:none;
+      page-break-after:always; break-after:page;
+    }
+    .page:last-child{page-break-after:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="book">
+
+  <!-- ===================== PAGE 01 — COVER ===================== -->
+  <section class="page p-cover" data-screen-label="01 Cover">
+    <div class="cover-img"><img src="assets/cover-sunset.jpg" alt="Arsen Konurbay, cover" /></div>
+    <div class="cover-vignette"></div>
+    <div class="cover-grain"></div>
+    <div class="vline l"></div>
+    <div class="vline r"></div>
+
+    <div class="crown">
+      <span>Talent Portfolio &nbsp;·&nbsp; Edition 01</span>
+      <span>A.K. &nbsp;<span class="dot"></span>&nbsp; 2026</span>
+    </div>
+
+    <div class="cover-stamp">
+      <span>Vol.</span>
+      <span class="y">01 / 26</span>
+    </div>
+
+    <div class="cover-name">
+      <div class="first display" style="color: rgb(231, 231, 200)">Arsen</div>
+      <div class="last display" style="color: rgb(213, 213, 129)">Konurbay<span class="amp">.</span></div>
+    </div>
+
+    <div class="cover-meta">
+      <div class="left">
+        <div class="col"><span class="k">Born</span><span class="v">2004 · 21</span></div>
+        <div class="col"><span class="k">Height</span><span class="v">180 cm</span></div>
+        <div class="col"><span class="k">Based</span><span class="v">Almaty, KZ</span></div>
+      </div>
+      <div class="col" style="align-items:flex-end;text-align:right;">
+        <span class="k">Representation</span>
+        <span class="v">Self · Open to bookings</span>
+      </div>
+    </div>
+
+    <div class="colophon" style="bottom:10px;color:#f1efe9;opacity:.7;">
+      <span>Cover · KZ / Almaty Foothills</span>
+      <span class="barcode" style="height:14px;"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+      <span>K-04 · Page 01 / 09</span>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 02 — TALENT CARD ===================== -->
+  <section class="page p-card" data-screen-label="02 Talent Card">
+    <div class="crown">
+      <span>Talent Card &nbsp;·&nbsp; Identity</span>
+      <span>A.K. &nbsp;<span class="dot"></span>&nbsp; 02 / 09</span>
+    </div>
+
+    <div class="card-grid">
+      <div class="card-portrait"><img src="assets/headshot-neutral-01.jpg" alt="portrait" /></div>
+
+      <div class="card-right">
+        <div class="ident">
+          <span class="num mute">N° 0421 — Talent File</span>
+          <div class="nm">Arsen<br/>Konurbay</div>
+          <div class="sub">actor &amp; model — based in Almaty, open to castings worldwide.</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span class="k">Age</span><span class="v">21</span></div>
+          <div class="stat"><span class="k">Height</span><span class="v">180 cm</span></div>
+          <div class="stat"><span class="k">Eyes</span><span class="v">Dark brown</span></div>
+          <div class="stat"><span class="k">Hair</span><span class="v">Black</span></div>
+          <div class="stat"><span class="k">Build</span><span class="v">Athletic</span></div>
+          <div class="stat"><span class="k">Complexion</span><span class="v">Light olive</span></div>
+          <div class="stat"><span class="k">Nationality</span><span class="v">Kazakh</span></div>
+          <div class="stat"><span class="k">Languages</span><span class="v">KZ · RU · EN</span></div>
+        </div>
+
+        <div class="toc">
+          <div class="row"><span class="n">01</span><span class="t">Cover</span><span class="p">p. 01</span></div>
+          <div class="row"><span class="n">02</span><span class="t">Talent Card</span><span class="p">p. 02</span></div>
+          <div class="row"><span class="n">03</span><span class="t">Headshots — Clean Portrait</span><span class="p">p. 03</span></div>
+          <div class="row"><span class="n">04</span><span class="t">Full Length</span><span class="p">p. 04</span></div>
+          <div class="row"><span class="n">05</span><span class="t">Expression &amp; Character</span><span class="p">p. 05</span></div>
+          <div class="row"><span class="n">06</span><span class="t">Lifestyle / Off Set</span><span class="p">p. 06</span></div>
+          <div class="row"><span class="n">07</span><span class="t">Physique Card</span><span class="p">p. 07</span></div>
+          <div class="row"><span class="n">08</span><span class="t">Experience &amp; Roles</span><span class="p">p. 08</span></div>
+          <div class="row"><span class="n">09</span><span class="t">Skills &amp; Contact</span><span class="p">p. 09</span></div>
+        </div>
+
+        <div class="bio">
+          <b>Note</b>
+          A young Kazakh talent with a quiet, cinematic presence. Comfortable in commercial, fashion and dramatic registers — equally at home in a clean studio frame and on location.
+        </div>
+      </div>
+    </div>
+
+    <div class="colophon">
+      <span>Konurbay · A.K. — Talent File 0421</span>
+      <span>Almaty / KZ · 43.2389° N, 76.8897° E</span>
+      <span>02 / 09</span>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 03 — HEADSHOTS ===================== -->
+  <section class="page p-head" data-screen-label="03 Headshots">
+    <div class="crown">
+      <span>Section 03 &nbsp;·&nbsp; Headshots / Clean Portrait</span>
+      <span>A.K. &nbsp;<span class="dot"></span>&nbsp; 03 / 09</span>
+    </div>
+
+    <div class="head-title">
+      <h2>Headshots.</h2>
+      <div class="sub">four frames, no retouch.</div>
+    </div>
+    <div class="rule" style="margin-top:14px;"></div>
+
+    <div class="head-grid">
+      <div class="img"><img src="assets/headshot-neutral-01.jpg" style="object-position:50% 25%" /><span class="cap">01 · Neutral / Front</span></div>
+      <div class="img"><img src="assets/headshot-smile-02.jpg" style="object-position:50% 25%" /><span class="cap">02 · Smile / Soft</span></div>
+      <div class="img"><img src="assets/headshot-profile.jpg" style="object-position:50% 25%" /><span class="cap">03 · Profile / Left</span></div>
+      <div class="img"><img src="assets/headshot-smile-01.jpg" style="object-position:50% 25%" /><span class="cap">04 · 3/4 / Open</span></div>
+    </div>
+
+    <div class="h-meta">
+      <span>Daylight · indoor · no make-up · iPhone Pro</span>
+      <span class="ix">REF / HS-001 → HS-004</span>
+    </div>
+
+    <div class="colophon">
+      <span>Casting Set — Clean Portrait</span>
+      <span class="editorial" style="font-size:11px;text-transform:none;letter-spacing:0;">“the eyes do the work.”</span>
+      <span>03 / 09</span>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 04 — FULL LENGTH ===================== -->
+  <section class="page p-full" data-screen-label="04 Full Length">
+    <div class="crown">
+      <span>Section 04 &nbsp;·&nbsp; Full Length / Stand</span>
+      <span>A.K. &nbsp;<span class="dot"></span>&nbsp; 04 / 09</span>
+    </div>
+
+    <div class="full-head">
+      <h2>Full length.<br/><span class="editorial" style="font-size:22px;font-weight:400;">two stances, daylight.</span></h2>
+      <div class="right">
+        <span class="k">Height</span>
+        <span class="v">180 cm</span>
+        <span class="k" style="margin-top:6px;">Frame</span>
+        <span class="v">athletic — 77 kg</span>
+      </div>
+    </div>
+
+    <div class="full-grid">
+      <div class="img"><img src="assets/full-polo.jpg" style="object-position:50% 35%" /><span class="cap">FL-01 · interior · brown polo</span></div>
+      <div class="img"><img src="assets/body-back.jpg" style="object-position:50% 35%" /><span class="cap">FL-02 · back · stand</span></div>
+    </div>
+
+    <div class="full-foot">
+      <div class="left">“Walks and stands without forcing it — keeps a natural weight.”</div>
+      <div class="right">REF / FL-01 → FL-02</div>
+    </div>
+
+    <div class="colophon">
+      <span>Full Length — Stand Set</span>
+      <span>Almaty · Kazakhstan</span>
+      <span>04 / 09</span>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 05 — EXPRESSIONS / CHARACTER ===================== -->
+  <section class="page p-expr" data-screen-label="05 Expression">
+    <div class="expr-left">
+      <img src="assets/cover-sunset.jpg" alt="character" />
+      <div class="ov">Character · Open Air · KZ 2025</div>
+    </div>
+    <div class="expr-right">
+      <div class="kicker" style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);">Section 05 · Expression</div>
+      <h2 style="margin-top:6px;">Range.</h2>
+      <div class="lede">From a quiet hold to an open smile — the same face, four different rooms.</div>
+
+      <div class="expr-grid">
+        <div class="img"><img src="assets/headshot-neutral-02.jpg" style="object-position:50% 28%" /></div>
+        <div class="img"><img src="assets/headshot-smile-01.jpg" style="object-position:50% 28%" /></div>
+        <div class="img"><img src="assets/headshot-wide.jpg" style="object-position:50% 28%" /></div>
+        <div class="img"><img src="assets/lifestyle-mountain.jpg" style="object-position:50% 25%" /></div>
+      </div>
+
+      <div class="expr-tags">
+        <span class="tag">Calm</span>
+        <span class="tag">Determined</span>
+        <span class="tag">Warm</span>
+        <span class="tag">Curious</span>
+        <span class="tag">Stoic</span>
+        <span class="tag">Playful</span>
+        <span class="tag">Focused</span>
+      </div>
+
+      <div style="margin-top:18px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);">
+        <span>EX-01 → EX-04</span>
+        <span>05 / 09</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 06 — LIFESTYLE ===================== -->
+  <section class="page p-life" data-screen-label="06 Lifestyle">
+    <div class="crown">
+      <span>Section 06 &nbsp;·&nbsp; Lifestyle / Off Set</span>
+      <span>A.K. &nbsp;<span class="dot"></span>&nbsp; 06 / 09</span>
+    </div>
+
+    <div class="life-head">
+      <h2>Off set.</h2>
+      <div class="ed">an ordinary week — Almaty &amp; the road.</div>
+    </div>
+    <div class="rule" style="margin-top:14px;"></div>
+
+    <div class="life-grid">
+      <div class="img l1"><img src="assets/lifestyle-jersey-night.jpg" style="object-position:50% 30%" /><span class="cap">night / city</span></div>
+      <div class="img l2"><img src="assets/lifestyle-longsleeve.jpg" style="object-position:50% 25%" /><span class="cap">mirror / 03</span></div>
+      <div class="img l3"><img src="assets/lifestyle-barber-chair.jpg" style="object-position:50% 35%" /><span class="cap">barber / black on black</span></div>
+      <div class="img l4"><img src="assets/lifestyle-a-jersey.jpg" style="object-position:50% 30%" /><span class="cap">varsity / A</span></div>
+    </div>
+
+    <div class="life-foot">
+      <div class="left">“Holds a mood without performing it.”</div>
+      <div class="right">REF / LS-01 → LS-04 · 06 / 09</div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 07 — PHYSIQUE / BODY CARD ===================== -->
+  <section class="page p-body" data-screen-label="07 Physique">
+    <div class="crown">
+      <span>Section 07 &nbsp;·&nbsp; Physique Card</span>
+      <span>A.K. &nbsp;<span class="dot"></span>&nbsp; 07 / 09</span>
+    </div>
+
+    <div class="body-head">
+      <h2>Physique.<br/><span class="editorial" style="font-size:22px;font-weight:400;">front / side / back — reference set.</span></h2>
+      <div style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);">
+        Standard agency three-view<br/>Daylight · neutral pose
+      </div>
+    </div>
+
+    <div class="body-grid">
+      <div class="img"><img src="assets/body-front.jpg" style="object-position:50% 40%" /><span class="cap">A · Front</span></div>
+      <div class="img"><img src="assets/body-side.jpg" style="object-position:50% 40%" /><span class="cap">B · Side</span></div>
+      <div class="img"><img src="assets/body-back.jpg" style="object-position:50% 40%" /><span class="cap">C · Back</span></div>
+    </div>
+
+    <div class="body-stats">
+      <div class="cell"><span class="k">Height</span><span class="v">180 cm</span></div>
+      <div class="cell"><span class="k">Weight</span><span class="v">77 kg</span></div>
+      <div class="cell"><span class="k">Chest</span><span class="v">100 cm</span></div>
+      <div class="cell"><span class="k">Waist</span><span class="v">78 cm</span></div>
+      <div class="cell" style="border-right:1px solid rgba(14,14,12,.2)"><span class="k">Shoe</span><span class="v">EU 43</span></div>
+      <div class="cell"><span class="k">Jacket</span><span class="v">M / 48-50</span></div>
+      <div class="cell"><span class="k">Trouser</span><span class="v">32 W</span></div>
+      <div class="cell"><span class="k">Shirt</span><span class="v">M,L</span></div>
+    </div>
+
+    <div class="body-note">Measurements are self-reported, June 2026. Athletic build — gym &amp; combat training. Comfortable shirtless for shoots; tattoos: small, left forearm.</div>
+
+    <div class="colophon">
+      <span>Physique Card · BC-01 → BC-03</span>
+      <span class="editorial" style="font-size:11px;text-transform:none;letter-spacing:0;">“three views, one body.”</span>
+      <span>07 / 09</span>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 08 — EXPERIENCE ===================== -->
+  <section class="page p-exp" data-screen-label="08 Experience">
+    <div class="exp-left">
+      <div class="kicker">Section 08 · Experience</div>
+      <h2>Roles &amp;<br/>credits.</h2>
+
+      <div class="exp-list">
+        <div class="exp-row">
+          <span class="yr">2025</span>
+          <div>
+            <div class="title">Commercial spot — telecom brand</div>
+            <div class="desc">young urban character, lead frames; Almaty studio shoot.</div>
+          </div>
+          <span class="role">Featured</span>
+        </div>
+        <div class="exp-row">
+          <span class="yr">2025</span>
+          <div>
+            <div class="title">Short film — military episode</div>
+            <div class="desc">soldier in a checkpoint sequence; combat fatigues, full uniform.</div>
+          </div>
+          <span class="role">Episode</span>
+        </div>
+        <div class="exp-row">
+          <span class="yr">2024</span>
+          <div>
+            <div class="title">Action sequence — stunt &amp; fight</div>
+            <div class="desc">choreographed hand-to-hand insert; on-set fight coordinator.</div>
+          </div>
+          <span class="role">Action</span>
+        </div>
+        <div class="exp-row">
+          <span class="yr">2024</span>
+          <div>
+            <div class="title">Streetwear lookbook — local label</div>
+            <div class="desc">outdoor editorial, daylight; full-length and detail frames.</div>
+          </div>
+          <span class="role">Model</span>
+        </div>
+        <div class="exp-row">
+          <span class="yr">2023</span>
+          <div>
+            <div class="title">Background / massovka — feature film</div>
+            <div class="desc">crowd scenes, period costume; multi-day call.</div>
+          </div>
+          <span class="role">Background</span>
+        </div>
+        <div class="exp-row">
+          <span class="yr">2023</span>
+          <div>
+            <div class="title">Online ad — fitness brand</div>
+            <div class="desc">UGC-style; gym &amp; outdoor B-roll.</div>
+          </div>
+          <span class="role">Talent</span>
+        </div>
+      </div>
+
+      <div class="exp-stamp">
+        <div class="sq">A.K.<br/>0421</div>
+        <div class="txt">Available for castings in Almaty &amp; remotely. Self-tape ready within 24h.</div>
+      </div>
+    </div>
+
+    <div class="exp-right">
+      <div class="exp-r-main"><img src="assets/role-military-full.jpg" alt="military role" /></div>
+      <div class="exp-r-tiles">
+        <div class="img"><img src="assets/role-military-front.jpg" style="object-position:50% 25%" /></div>
+        <div class="img"><img src="assets/role-military-side.jpg" style="object-position:50% 25%" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 09 — SKILLS + CONTACT ===================== -->
+  <section class="page p-end" data-screen-label="09 Skills &amp; Contact">
+    <div class="crown">
+      <span>Section 09 &nbsp;·&nbsp; Skills / Contact</span>
+      <span>A.K. &nbsp;<span class="dot"></span>&nbsp; 09 / 09</span>
+    </div>
+
+    <div class="end-top" style="margin-top:36px;">
+      <div>
+        <h2>Skills &amp;<br/>contact.</h2>
+      </div>
+      <div class="lede">
+        “Open to commercial, fashion, editorial, drama and action work — in front of the camera and on location.”
+      </div>
+    </div>
+
+    <div class="skills">
+      <div class="skill-col">
+        <h4>Performance</h4>
+        <ul>
+          <li><span>Camera acting</span><span class="lv">intermediate</span></li>
+          <li><span>Self-tape / audition</span><span class="lv">native</span></li>
+          <li><span>Improvisation</span><span class="lv">intermediate</span></li>
+          <li><span>Cold reading</span><span class="lv">working</span></li>
+          <li><span>Commercial presence</span><span class="lv">strong</span></li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h4>Movement &amp; Action</h4>
+        <ul>
+          <li><span>Hand-to-hand / fight</span><span class="lv">trained</span></li>
+          <li><span>Boxing basics</span><span class="lv">working</span></li>
+          <li><span>Gym &amp; strength</span><span class="lv">advanced</span></li>
+          <li><span>Running / sprint</span><span class="lv">strong</span></li>
+          <li><span>Military bearing</span><span class="lv">native</span></li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h4>Languages</h4>
+        <ul>
+          <li><span>Kazakh</span><span class="lv">native</span></li>
+          <li><span>Russian</span><span class="lv">native</span></li>
+          <li><span>English</span><span class="lv">pre-intermediate</span></li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h4>Other</h4>
+        <ul>
+          <li><span>Driving / B, C1</span><span class="lv">licensed</span></li>
+          <li><span>Basketball</span><span class="lv">amateur</span></li>
+          <li><span>Mountain / hiking</span><span class="lv">comfortable</span></li>
+          <li><span>Firearms handling</span><span class="lv">basic / safe</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="end-bottom">
+      <div class="contact-block">
+        <div>
+          <div class="lbl">Direct line</div>
+          <div class="big">+7&nbsp;707&nbsp;424&nbsp;30&nbsp;63</div>
+        </div>
+        <div>
+          <div class="lbl">Email</div>
+          <div class="em"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="37565c5859424555564e775a565e5b194542">[email&#160;protected]</a></div>
+        </div>
+        <div>
+          <div class="lbl">Based</div>
+          <div class="city">Almaty, Kazakhstan — available worldwide.</div>
+        </div>
+      </div>
+
+      <div class="qr-wrap">
+        <div class="qr"><svg id="qr-svg" viewBox="0 0 29 29" shape-rendering="crispEdges" aria-label="QR contact"></svg></div>
+        <div class="qr-cap">Scan · vCard / Contact</div>
+      </div>
+    </div>
+
+    <div class="colophon">
+      <span>Arsen Konurbay · Talent Portfolio 2026 — Edition 01</span>
+      <span class="barcode"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+      <span>End / 09 of 09</span>
+    </div>
+  </section>
+
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Pseudo-QR generator (visual placeholder that encodes contact info into a deterministic, scannable-looking grid).
+  // It looks like a real QR — finder squares in 3 corners, alignment block, modules. Not an actual decodable QR,
+  // but on a printed talent card it reads as the visual contact cue. Replace with a real QR image if needed.
+  (function(){
+    const svg = document.getElementById('qr-svg');
+    if(!svg) return;
+    const N = 29;
+    // Seed grid from contact string
+    const seed = "AK|+77074243063|akonurbay@mail.ru|ALMATY|2026";
+    let h = 2166136261;
+    function rng(){ h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h>>>0) % 1000) / 1000; }
+    for(let i=0;i<seed.length;i++){ h = (h ^ seed.charCodeAt(i)) * 16777619; }
+
+    const grid = Array.from({length:N},()=>Array(N).fill(0));
+
+    // helpers
+    function placeFinder(x,y){
+      for(let dy=0;dy<7;dy++){
+        for(let dx=0;dx<7;dx++){
+          const onEdge = dx===0||dx===6||dy===0||dy===6;
+          const inCenter = dx>=2&&dx<=4&&dy>=2&&dy<=4;
+          grid[y+dy][x+dx] = (onEdge||inCenter) ? 1 : 0;
+        }
+      }
+    }
+    function placeAlign(x,y){
+      for(let dy=0;dy<5;dy++){
+        for(let dx=0;dx<5;dx++){
+          const onEdge = dx===0||dx===4||dy===0||dy===4;
+          const center = dx===2&&dy===2;
+          grid[y+dy][x+dx] = (onEdge||center)?1:0;
+        }
+      }
+    }
+    placeFinder(0,0);
+    placeFinder(N-7,0);
+    placeFinder(0,N-7);
+    placeAlign(N-9,N-9);
+
+    // timing lines
+    for(let i=8;i<N-8;i++){ grid[6][i] = i%2===0?1:0; grid[i][6] = i%2===0?1:0; }
+
+    // fill data area
+    function isReserved(x,y){
+      // finder + sep
+      if(x<8 && y<8) return true;
+      if(x>N-9 && y<8) return true;
+      if(x<8 && y>N-9) return true;
+      // alignment
+      if(x>=N-9 && x<=N-5 && y>=N-9 && y<=N-5) return true;
+      // timing
+      if(x===6||y===6) return true;
+      return false;
+    }
+    for(let y=0;y<N;y++){
+      for(let x=0;x<N;x++){
+        if(isReserved(x,y)) continue;
+        grid[y][x] = rng() > 0.5 ? 1 : 0;
+      }
+    }
+
+    // emit svg
+    let s = '<rect width="29" height="29" fill="#fff"/>';
+    for(let y=0;y<N;y++){
+      for(let x=0;x<N;x++){
+        if(grid[y][x]) s += `<rect x="${x}" y="${y}" width="1" height="1" fill="#0e0e0c"/>`;
+      }
+    }
+    svg.innerHTML = s;
+  })();
+</script>
+</body>
+</html>
